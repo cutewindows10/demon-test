@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { sequelize } from "./config/database.js";
-import { getAllUsers, getUserById, createUser, updateUser, deleteUser, loginUser } from "./controllers/UserController.js";
+import { getAllUsers, getUserById, createUser, updateUser, deleteUser, loginUser, signUpUser } from "./controllers/UserController.js";
 import { getAllBranches, getBranchById, createBranch, updateBranch, deleteBranch } from "./controllers/BranchController.js";
 import { getAllDoneTasks, getDoneTaskById, createDoneTask, updateDoneTask, deleteDoneTask } from "./controllers/DoneTaskController.js";
 import { getAllEquipment, getEquipmentById, createEquipment, updateEquipment, deleteEquipment } from "./controllers/EquipmentController.js";
@@ -27,7 +27,7 @@ const connectToDatabase = async () => {
 
 app.listen(port, async () => {
     await connectToDatabase();
-    console.log(`💫 Server is live on port ${port}`);
+    console.log(`💫 サーバーがポート ${port} で動いてるよ`);
 })
 
 
@@ -38,6 +38,7 @@ app.put('/users/:id', updateUser);
 app.delete('/users/:id', deleteUser);
 
 app.post('/users/login', loginUser);
+app.post('/users/signup', signUpUser);
 
 app.get('/branches', getAllBranches);
 app.get('/branches/:id', getBranchById);
