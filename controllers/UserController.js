@@ -109,7 +109,7 @@ export const signUpUser = async (req, res) => {
             CIN,
             role,
             email,
-            password: hashedPassword,
+            password,
             branchID
         });
         res.status(201).json({ message: "User registered successfully", userId: newUser.id });
