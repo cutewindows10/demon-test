@@ -17,5 +17,3 @@ export default class Documentation extends Model {
     modelName: 'Documentation',
     tableName: 'Documentations'
   });
-  return Documentation;
-};
