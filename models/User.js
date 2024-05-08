@@ -6,6 +6,7 @@ export default class User extends Model {
   static associate(models) {
     this.hasMany(models.DoneTask);
     this.belongsTo(models.Branch);
+    this.hasMany(models.Documentation);
   }
   
 }
