@@ -8,7 +8,11 @@ export default class Documentation extends Model {
     }
   }
   Documentation.init({
-    documentationID: DataTypes.INTEGER,
+    documentationID:{
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     userID: DataTypes.INTEGER,
     data: DataTypes.DATE,
     file: DataTypes.STRING
