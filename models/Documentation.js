@@ -14,7 +14,7 @@ export default class Documentation extends Model {
       autoIncrement: true
     },
     userID: DataTypes.INTEGER,
-    data: DataTypes.DATE,
+    date: DataTypes.DATE,
     file: DataTypes.STRING
   }, {
     sequelize,

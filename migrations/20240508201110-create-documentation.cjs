@@ -15,7 +15,7 @@ module.exports = {
       userID: {
         type: Sequelize.INTEGER
       },
-      data: {
+      date: {
         type: Sequelize.DATE
       },
       file: {
