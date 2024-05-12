@@ -18,6 +18,6 @@
     "sequelize": "6.37.3"
   },
   "devDependencies": {
-    "sequelize-cli": "^6.6.2"
+    "sequelize-cli": "6.6.2"
   }
 }
