@@ -10,7 +10,6 @@ import { getAllRooms, getRoomById, createRoom, updateRoom, deleteRoom } from "./
 import { getAllTasks, getTaskById, createTask, updateTask, deleteTask } from "./controllers/TaskController.js";
 import { getAllChecklists, getChecklistById, createChecklist, updateChecklist, deleteChecklist } from "./controllers/ChecklistController.js";
 
-
 const app = express();
 app.use(cors()); 
 app.use(express.json());
