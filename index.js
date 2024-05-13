@@ -18,7 +18,7 @@ const port = 3000;
 const connectToDatabase = async () => {
         try {
         await sequelize.authenticate();
-        console.log('Connection has been established successfully.');
+        console.log('Connected to database');
         } catch (error) {
         console.error('Unable to connect to the database:', error);
     }
