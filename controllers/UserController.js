@@ -89,7 +89,7 @@ export const loginUser = async (req, res) => {
         if (!isMatch) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
-        res.status(200).json({ message: "Login successful", userId: user.userID });
+        res.status(200).json({ message: "Login successful", userId: user.userID, role: user.role });
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });
     }
