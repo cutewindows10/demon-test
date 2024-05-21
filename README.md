@@ -17,6 +17,6 @@
 
 
 
-   Ensure you have Node.js version 21.6.2 installed to run this application.
+   Ensure you have Node.js version 21.6.2 installed to run this.
 
    
