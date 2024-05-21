@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import multer from 'multer';
 import { sequelize } from "./config/database.js";
 import { getAllUsers, getUserById, createUser, updateUser, deleteUser, loginUser, signUpUser } from "./controllers/UserController.js";
 import { getAllBranches, getBranchById, createBranch, updateBranch, deleteBranch } from "./controllers/BranchController.js";
@@ -81,3 +82,45 @@ app.post('/tasks', createTask);
 app.put('/tasks/:id', updateTask);
 app.delete('/tasks/:id', deleteTask);
 
+
+
+
+
+// Set up storage engine for multer
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './images');
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+// Initialize upload variable
+const upload = multer({ storage: storage });
+
+// Route to upload a file
+app.post('/upload', upload.single('image'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: 'Please upload a file.' });
+    }
+    res.status(201).json({ message: 'File uploaded successfully', fileName: req.file.filename });
+});
+
+// Define __dirname in ES module scope
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Route to retrieve a file
+app.get('/images/:filename', (req, res) => {
+    const filename = req.params.filename;
+    const filepath = path.join(__dirname, 'images', filename);
+    res.sendFile(filepath, err => {
+        if (err) {
+            res.status(404).json({ message: 'File not found' });
+        }
+    });
+});
