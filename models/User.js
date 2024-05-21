@@ -23,6 +23,7 @@ User.init({
   email: DataTypes.STRING,
   password: DataTypes.STRING,
   key: DataTypes.STRING,
+  photo: DataTypes.STRING,
   branchID: DataTypes.INTEGER,
   username: DataTypes.STRING
 }, {

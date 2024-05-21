@@ -27,6 +27,9 @@ module.exports = {
       key: {
         type: Sequelize.STRING
       },
+      photo: {
+        type: Sequelize.STRING
+      },
       branchID: {
         type: Sequelize.INTEGER
       },

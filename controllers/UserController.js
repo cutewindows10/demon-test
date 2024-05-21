@@ -27,11 +27,11 @@ export const getUserById = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-    const { name, CIN, role, email, password, key, branchID, username } = req.body;
+    const { name, CIN, role, email, password, key, branchID, username, photo } = req.body;
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = await User.create({
-            name, CIN, role, email, password: hashedPassword, key, branchID, username
+            name, CIN, role, email, password: hashedPassword, key, branchID, username, photo
         });
         res.status(201).json({ message: "User created successfully", userId: newUser.id });
     } catch (error) {
@@ -41,7 +41,7 @@ export const createUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     const userId = req.params.id;
-    const { name, CIN, role, email, password, key, branchID, username } = req.body;
+    const { name, CIN, role, email, password, key, branchID, username, photo } = req.body;
     try {
         const user = await User.findByPk(userId);
         if (user) {
@@ -53,6 +53,7 @@ export const updateUser = async (req, res) => {
             user.key = key;
             user.branchID = branchID;
             user.username = username;
+            user.photo = photo;
             await user.save();
             res.status(200).json({ message: "User updated successfully", userId: user.id });
         } else {
@@ -97,7 +98,7 @@ export const loginUser = async (req, res) => {
 
 
 export const signUpUser = async (req, res) => {
-    const { name, username, CIN, role, email, password, branchID } = req.body;
+    const { name, username, CIN, role, email, password, branchID, photo } = req.body;
     try {
         const existingUser = await User.findOne({ where: { username } });
         if (existingUser) {
@@ -110,8 +111,9 @@ export const signUpUser = async (req, res) => {
             CIN,
             role,
             email,
-            password,
-            branchID
+            password: hashedPassword,
+            branchID,
+            photo
         });
         res.status(201).json({ message: "User registered successfully", userId: newUser.id });
     } catch (error) {
