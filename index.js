@@ -91,6 +91,18 @@ app.delete('/documentations/:id', deleteDocumentation);
 
 
 
+import fs from 'fs';
+
+// Check if the 'images' directory exists, if not create it
+if (!fs.existsSync('./images')) {
+    fs.mkdirSync('./images', { recursive: true });
+}
+
+// Check if the 'files' directory exists, if not create it
+if (!fs.existsSync('./files')) {
+    fs.mkdirSync('./files', { recursive: true });
+}
+
 
 
 // Set up storage engine for multer
