@@ -25,11 +25,11 @@ export const getDocumentationById = async (req, res) => {
 };
 
 export const createDocumentation = async (req, res) => {
-    const { userID, data, file } = req.body;
+    const { userID, date, file } = req.body;
     try {
         const newDocumentation = await Documentation.create({
             userID,
-            data,
+            date,
             file
         });
         res.status(201).json(newDocumentation);
@@ -40,12 +40,12 @@ export const createDocumentation = async (req, res) => {
 
 export const updateDocumentation = async (req, res) => {
     const documentationId = req.params.id;
-    const { userID, data, file } = req.body;
+    const { userID, date, file } = req.body;
     try {
         const documentation = await Documentation.findByPk(documentationId);
         if (documentation) {
             documentation.userID = userID;
-            documentation.data = data;
+            documentation.date = date;
             documentation.file = file;
             await documentation.save();
             res.status(200).json(documentation);

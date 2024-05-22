@@ -27,13 +27,24 @@ export const getUserById = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-    const { name, CIN, role, email, password, key, branchID, username, photo } = req.body;
+    const { name, username, CIN, role, email, password, branchID, photo } = req.body;
     try {
+        const existingUser = await User.findOne({ where: { username } });
+        if (existingUser) {
+            return res.status(409).json({ message: "Username already exists" });
+        }
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = await User.create({
-            name, CIN, role, email, password: hashedPassword, key, branchID, username, photo
+            name,
+            username,
+            CIN,
+            role,
+            email,
+            password: hashedPassword,
+            branchID,
+            photo
         });
-        res.status(201).json({ message: "User created successfully", userId: newUser.id });
+        res.status(201).json({ message: "User registered successfully", userId: newUser.id });
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });
     }

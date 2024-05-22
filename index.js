@@ -10,6 +10,7 @@ import { getAllRoles, getRoleById, createRole, updateRole, deleteRole } from "./
 import { getAllRooms, getRoomById, createRoom, updateRoom, deleteRoom } from "./controllers/RoomController.js";
 import { getAllTasks, getTaskById, createTask, updateTask, deleteTask } from "./controllers/TaskController.js";
 import { getAllChecklists, getChecklistById, createChecklist, updateChecklist, deleteChecklist } from "./controllers/ChecklistController.js";
+import { getAllDocumentations, getDocumentationById, createDocumentation, updateDocumentation, deleteDocumentation } from "./controllers/DocumentationController.js";
 
 const app = express();
 app.use(cors()); 
@@ -82,6 +83,12 @@ app.post('/tasks', createTask);
 app.put('/tasks/:id', updateTask);
 app.delete('/tasks/:id', deleteTask);
 
+app.get('/documentations', getAllDocumentations);
+app.get('/documentations/:id', getDocumentationById);
+app.post('/documentations', createDocumentation);
+app.put('/documentations/:id', updateDocumentation);
+app.delete('/documentations/:id', deleteDocumentation);
+
 
 
 
@@ -124,3 +131,37 @@ app.get('/images/:filename', (req, res) => {
         }
     });
 });
+
+
+// Set up storage engine for multer for general files
+const fileStorage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './files');
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+// Initialize upload variable for files
+const uploadFile = multer({ storage: fileStorage });
+
+// Route to upload a general file
+app.post('/files', uploadFile.single('file'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: 'Please upload a file.' });
+    }
+    res.status(201).json({ message: 'File uploaded successfully', fileName: req.file.filename });
+});
+
+// Route to retrieve a general file
+app.get('/files/:filename', (req, res) => {
+    const filename = req.params.filename;
+    const filepath = path.join(__dirname, 'files', filename);
+    res.sendFile(filepath, err => {
+        if (err) {
+            res.status(404).json({ message: 'File not found' });
+        }
+    });
+});
+
