@@ -26,9 +26,25 @@ const connectToDatabase = async () => {
     }
 }
 
+
+import User from './models/User.js';
+const testBro = async () => {
+    try {
+        const users = await User.findAll({
+            attributes: ['name']
+        });
+        console.log(users.map(user => user.name));
+    } catch (error) {
+        console.error('db is error:');
+    }
+};
+
 app.listen(port, async () => {
     await connectToDatabase();
     console.log(`💫 サーバーがポート ${port} で動いてるよ`);
+
+    testBro();
+
 })
 
 
