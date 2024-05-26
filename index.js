@@ -192,3 +192,35 @@ app.get('/files/:filename', (req, res) => {
         }
     });
 });
+
+
+import natural from 'natural';
+const TfIdf = natural.TfIdf;
+const tfidf = new TfIdf();
+
+app.get('/search/donetasks', async (req, res) => {
+    const searchText = req.query.problem;
+    if (!searchText) {
+        return res.status(400).json({ message: 'No search text provided' });
+    }
+    
+    try {
+        const doneTasks = await getAllDoneTasks();
+        const documents = doneTasks.map(task => task.problem);
+        documents.forEach(doc => tfidf.addDocument(doc));
+        
+        const scores = [];
+        tfidf.tfidfs(searchText, (i, measure) => {
+            scores.push({ index: i, score: measure });
+        });
+
+        const sortedScores = scores.sort((a, b) => b.score - a.score);
+        const topMatchIndex = sortedScores[0].index;
+        const bestMatch = doneTasks[topMatchIndex];
+
+        res.json({ similarProblem: bestMatch.problem, solution: bestMatch.solution });
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving doneTasks', error: error.message });
+    }
+});
+
