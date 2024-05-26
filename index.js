@@ -194,6 +194,8 @@ app.get('/files/:filename', (req, res) => {
 });
 
 
+
+//yes
 import natural from 'natural';
 const TfIdf = natural.TfIdf;
 const tfidf = new TfIdf();
