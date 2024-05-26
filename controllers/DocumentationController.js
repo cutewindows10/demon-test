@@ -1,4 +1,4 @@
-import Documentation from "../models/documentation.js";
+import Documentation from "../models/Documentation.js";
 
 export const getAllDocumentations = async (req, res) => {
     try {
