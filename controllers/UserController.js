@@ -60,7 +60,9 @@ export const updateUser = async (req, res) => {
             user.CIN = CIN;
             user.role = role;
             user.email = email;
-            user.password = await bcrypt.hash(password, 10);
+            if (password) {
+                user.password = await bcrypt.hash(password, 10);
+            }
             user.key = key;
             user.branchID = branchID;
             user.username = username;
@@ -143,11 +145,12 @@ export const loginUserWithJWT = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        const isMatch = password == user.password;
+        const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
-        const token = jwt.sign({ id: user.id, key: user.key }, process.env.JWT_SECRET);
+        // Set token to never expire by not defining an expiration time
+        const token = jwt.sign({ id: user.id, key: user.key }, process.env.JWT_SECRET, { expiresIn: '100y' });
         res.status(200).json({ message: "Login successful", userId: user.id, token });
     } catch (error) {
         res.status(500).json({ message: "Internal server error" });

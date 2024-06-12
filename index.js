@@ -2,12 +2,12 @@ import express from "express";
 import cors from "cors";
 import multer from 'multer';
 import { sequelize } from "./config/database.js";
-import { getAllUsers, getUserById, createUser, updateUser, deleteUser, loginUser, signUpUser } from "./controllers/UserController.js";
+import { getAllUsers, getUserById, createUser, updateUser, deleteUser, loginUser, signUpUser, loginUserWithJWT } from "./controllers/UserController.js";
 import { getAllBranches, getBranchById, createBranch, updateBranch, deleteBranch } from "./controllers/BranchController.js";
 import { getAllDoneTasks, getDoneTasksByCurrentTime, getDoneTasksByDate,getDoneTaskById, createDoneTask, updateDoneTask, deleteDoneTask } from "./controllers/DoneTaskController.js";
 import { getAllEquipment, getEquipmentById, createEquipment, updateEquipment, deleteEquipment } from "./controllers/EquipmentController.js";
 import { getAllRoles, getRoleById, createRole, updateRole, deleteRole } from "./controllers/RoleController.js";
-import { getAllRooms, getRoomById, createRoom, updateRoom, deleteRoom } from "./controllers/RoomController.js";
+import { getAllRooms, getRoomById, createRoom, updateRoom, deleteRoom, resetAllRoomStatuses } from "./controllers/RoomController.js";
 import { getAllTasks, getTaskById, createTask, updateTask, deleteTask } from "./controllers/TaskController.js";
 import { getAllChecklists, getChecklistById, createChecklist, updateChecklist, deleteChecklist } from "./controllers/ChecklistController.js";
 import { getAllDocumentations, getDocumentationById, createDocumentation, updateDocumentation, deleteDocumentation } from "./controllers/DocumentationController.js";
@@ -26,9 +26,14 @@ const connectToDatabase = async () => {
     }
 }
 
+
+
+
 app.listen(port, async () => {
     await connectToDatabase();
     console.log(`💫 Server live on port ${port}`);
+
+
 })
 
 
@@ -40,6 +45,9 @@ app.delete('/users/:id', deleteUser);
 
 app.post('/users/login', loginUser);
 app.post('/users/signup', signUpUser);
+
+app.post('/users/loginwithjwt', loginUserWithJWT);
+
 
 app.get('/branches', getAllBranches);
 app.get('/branches/:id', getBranchById);
@@ -81,6 +89,9 @@ app.get('/rooms/:id', getRoomById);
 app.post('/rooms', createRoom);
 app.put('/rooms/:id', updateRoom);
 app.delete('/rooms/:id', deleteRoom);
+
+app.post('/rooms/resetStatuses', resetAllRoomStatuses);
+
 
 app.get('/tasks', getAllTasks);
 app.get('/tasks/:id', getTaskById);
