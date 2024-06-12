@@ -4,7 +4,7 @@ import multer from 'multer';
 import { sequelize } from "./config/database.js";
 import { getAllUsers, getUserById, createUser, updateUser, deleteUser, loginUser, signUpUser } from "./controllers/UserController.js";
 import { getAllBranches, getBranchById, createBranch, updateBranch, deleteBranch } from "./controllers/BranchController.js";
-import { getAllDoneTasks, getDoneTaskById, createDoneTask, updateDoneTask, deleteDoneTask } from "./controllers/DoneTaskController.js";
+import { getAllDoneTasks, getDoneTasksByCurrentTime, getDoneTasksByDate,getDoneTaskById, createDoneTask, updateDoneTask, deleteDoneTask } from "./controllers/DoneTaskController.js";
 import { getAllEquipment, getEquipmentById, createEquipment, updateEquipment, deleteEquipment } from "./controllers/EquipmentController.js";
 import { getAllRoles, getRoleById, createRole, updateRole, deleteRole } from "./controllers/RoleController.js";
 import { getAllRooms, getRoomById, createRoom, updateRoom, deleteRoom } from "./controllers/RoomController.js";
@@ -26,25 +26,9 @@ const connectToDatabase = async () => {
     }
 }
 
-
-import User from './models/User.js';
-const testBro = async () => {
-    try {
-        const users = await User.findAll({
-            attributes: ['name']
-        });
-        console.log(users.map(user => user.name));
-    } catch (error) {
-        console.error('db is error:');
-    }
-};
-
 app.listen(port, async () => {
     await connectToDatabase();
-    console.log(`💫 サーバーがポート ${port} で動いてるよ`);
-
-    testBro();
-
+    console.log(`💫 Server live on port ${port}`);
 })
 
 
@@ -74,6 +58,11 @@ app.get('/donetasks/:id', getDoneTaskById);
 app.post('/donetasks', createDoneTask);
 app.put('/donetasks/:id', updateDoneTask);
 app.delete('/donetasks/:id', deleteDoneTask);
+
+app.get('/donetasks/currenttime', getDoneTasksByCurrentTime);
+app.get('/donetasks/date', getDoneTasksByDate);
+
+
 
 app.get('/equipments', getAllEquipment);
 app.get('/equipments/:id', getEquipmentById);
@@ -194,8 +183,6 @@ app.get('/files/:filename', (req, res) => {
 });
 
 
-
-//yes
 import natural from 'natural';
 const TfIdf = natural.TfIdf;
 const tfidf = new TfIdf();
@@ -225,4 +212,3 @@ app.get('/search/donetasks', async (req, res) => {
         res.status(500).json({ message: 'Error retrieving doneTasks', error: error.message });
     }
 });
-
